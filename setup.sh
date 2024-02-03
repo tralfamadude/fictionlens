@@ -5,3 +5,4 @@ pip install ebooklib beautifulsoup4
 pip install openai
 pip install -r ./frontend/requirements.txt
 pip install -r ./backend/requirements.txt
+python ./backend/app/engine/generate.py
