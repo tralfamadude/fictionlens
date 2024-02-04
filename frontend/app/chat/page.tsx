@@ -2,10 +2,10 @@
 
 import { useChat } from "ai/react";
 import { useMemo } from "react";
-import { insertDataIntoMessages } from "./transform";
-import { ChatInput, ChatMessages } from "./ui/chat";
+import { insertDataIntoMessages } from "../components/transform";
+import { ChatInput, ChatMessages } from "../components/ui/chat";
 
-export default function ChatSection() {
+export default function StorySection() {
   const {
     messages,
     input,
