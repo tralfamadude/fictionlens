@@ -23,6 +23,6 @@
     },
     "forceConsistentCasingInFileNames": true,
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/page/chat.js", "app/page.tsx"],
   "exclude": ["node_modules"],
 }
