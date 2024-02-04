@@ -1,5 +1,6 @@
 eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
 . .env
+conda activate fictionlens
 (cd backend ; python main.py  >main.py.out 2>main.py.err & )
 
 # todo: frontend start
