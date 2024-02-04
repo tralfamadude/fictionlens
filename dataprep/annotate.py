@@ -10,8 +10,13 @@ import os
 import sys
 
 annotation_prompt="""
-In the text quoted below, determine the sentiment as -1,0,1 for bad, neutral, good. Identify the names of persons or places. Format these into a JSON with the keys "sentiment" and "entities". Only give JSON as the response. 
+In the text in triple quotes below, determine the sentiment as -1,0,1 for bad, neutral, good. Identify the names of persons. Format these into a JSON with the keys "sentiment" and "entities". If there are no name or persons or places, "entities" key should have and empty list as value. Only give JSON as the response. 
 """
+
+annotation_prompt="""
+Create a JSON from the user text, determine the sentiment as -1,0,1 for bad, neutral, good and use the key "sentiment". Identify the proper names of persons and put in a list of "persons". Identify names of places and put in a list of "places". Use empty lists if nothing is found. Only give JSON as the response. 
+"""
+
 
 # Set up OpenAI key
 mykey = os.getenv("OPENAI_API_KEY")
@@ -19,6 +24,8 @@ if len(mykey) == 0:
     print("OPENAI_API_KEY env var not found")
     sys.exit(1)
 client = OpenAI(api_key=mykey)
+
+# enrichment_llm = OpenAI(model="gpt-3.5-turbo", temperature=0.1, max_tokens=750)
 
 
 def read_jsonl_file(filename):
@@ -38,9 +45,25 @@ def get_embeddings(data):
 
 def annotate_with_gpt4(data):
     for item in data:
-        prompt = f"{annotation_prompt} \n\"\"\"{item['text']}\"\"\""
-        response = client.completions.create(model="gpt-3.5-turbo", prompt=prompt)  # gpt-3.5-turbo
-        item['annotate'] = response.choices[0].text.strip()
+        #prompt = f"{annotation_prompt} \n\"\"\"{item['text']}\"\"\""
+        # response = client.chat.completions.create(model="gpt-4", messages=[prompt])  # gpt-3.5-turbo
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",   # gpt-4
+            temperature=0.1,
+            messages=[
+                {
+                    "role": "system",
+                    "content": annotation_prompt
+                },
+                {
+                    "role": "user",
+                    "content": item['text']
+                }
+            ]
+        )
+        annotate = response.choices[0].message.content
+        item['annotation'] = annotate
+        print(f"RESPONSE={annotate} FROM  {item['text']}")
     return data
 
 def main():
