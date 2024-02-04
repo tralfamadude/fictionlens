@@ -3,3 +3,11 @@ eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
 (cd backend ; python main.py  >main.py.out 2>main.py.err & )
 
 # todo: frontend start
+
+
+# test
+sleep 30
+curl --location 'localhost:8000/api/chat' \
+--header 'Content-Type: application/json' \
+--data '{ "messages": [{ "role": "user", "content": "Hello" }] }'
+
