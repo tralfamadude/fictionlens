@@ -1,28 +1,58 @@
-import Image from "next/image";
+'use client'
+import { usePathname, useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 export default function Header() {
+  const pathname = usePathname();
+  const router = useRouter();
+
+  // Determine button styles based on pathname and focus
+  const getButtonStyles = (buttonPath: string) => {
+    return {
+      background: pathname === buttonPath ? 'black' : 'white',
+      color: pathname === buttonPath ? 'white' : 'black',
+      border: 'none',
+      padding: '10px 20px',
+      borderRadius: '5px',
+      cursor: 'pointer',
+    };
+  };
+
   return (
-    <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-      <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-        Get started by editing&nbsp;
-        <code className="font-mono font-bold">app/page.tsx</code>
-      </p>
-      <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-        <a
-          href="https://www.llamaindex.ai/"
-          className="flex items-center justify-center font-nunito text-lg font-bold gap-2"
-        >
-          {/* <span>Built by LlamaIndex</span>
-          <Image
-            className="rounded-xl"
-            src="/llama.png"
-            alt="Llama Logo"
-            width={40}
-            height={40}
-            priority
-          /> */}
-        </a>
+    <div className="z-10 max-w-5xl w-full flex items-center justify-between font-mono text-sm lg:flex">
+      <div className="flex items-center">
+        <Image
+          src="https://static.vecteezy.com/system/resources/previews/005/393/646/non_2x/lama-flat-style-cute-animal-drawing-for-children-s-textiles-postcards-illustration-vector.jpg"
+          alt="logo"
+          width={50}
+          height={50}
+          className="rounded-full"
+          loading="lazy"
+        />
+        <h1 className="text-4xl font-bold ml-2">FictionLens</h1>
       </div>
+      <nav>
+        <ul className="flex space-x-4">
+          <li>
+            <button
+              onClick={() => router.push('/chat')}
+              onFocus={() => { }}
+              style={getButtonStyles('/chat')}
+            >
+              Chat
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => router.push('/story')}
+              onFocus={() => { }}
+              style={getButtonStyles('/story')}
+            >
+              Story
+            </button>
+          </li>
+        </ul>
+      </nav>
     </div>
   );
 }

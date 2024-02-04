@@ -33,7 +33,7 @@ export default function ChatInput(props: ChatInputProps) {
         <button
           disabled={props.isLoading}
           type="submit"
-          className="p-4 text-white rounded-xl shadow-xl bg-gradient-to-r from-cyan-500 to-sky-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="p-4 text-white rounded-xl shadow-xl bg-gradient-to-r from-purple-500 to-purple-500 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Send message
         </button>
