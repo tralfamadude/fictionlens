@@ -1,10 +1,18 @@
 #  source this
-#conda create --name fictionlens python=3.11
-#conda activate fictionlens
+eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
+conda create --name fictionlens python=3.11
+conda activate fictionlens
 pip install ebooklib beautifulsoup4
 pip install openai
+
+cd backend
 poetry install
 poetry shell
-pip install -r ./backend/requirements.txt
-python ./backend/app/engine/generate.py    # temporary
-(cd backend ; python main.py  >main.py.out 2>main.py.err & )
+
+export OPENAI_API_KEY=....
+
+python app/engine/generate.py    # temporary
+# no # pip install -r requirements.txt
+
+
+

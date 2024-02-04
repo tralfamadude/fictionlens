@@ -7,3 +7,6 @@ Example source: https://www.gutenberg.org/ebooks/64317
 
 Put the final dataset for llamaindex in ../data/
 
+# setup node
+Download from the official Node.js website: https://nodejs.org/en/download/
+Run the installer
