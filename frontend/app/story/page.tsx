@@ -3,7 +3,8 @@
 import { useChat } from "ai/react";
 import { useMemo } from "react";
 import { insertDataIntoMessages } from "../components/transform";
-import { ChatInput, ChatMessages } from "../components/ui/chat";
+import Image from 'next/image';
+import image from "./gatsby_sentiment.png";
 
 export default function StorySection() {
     const {
@@ -28,18 +29,12 @@ export default function StorySection() {
 
     return (
         <div className="space-y-4 max-w-5xl w-full">
-            <ChatMessages
-                messages={transformedMessages}
-                isLoading={isLoading}
-                reload={reload}
-                stop={stop}
-            />
-            <ChatInput
-                input={input}
-                handleSubmit={handleSubmit}
-                handleInputChange={handleInputChange}
-                isLoading={isLoading}
-                multiModal={process.env.NEXT_PUBLIC_MODEL === "gpt-4-vision-preview"}
+            <Image
+                src={image}
+                alt="logo"
+                width={1000}
+                height={1000}
+                loading="lazy"
             />
         </div>
     );

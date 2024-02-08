@@ -2,7 +2,7 @@
   "name": "my-app",
   "version": "0.1.0",
   "scripts": {
-    "dev": "cross-env NEXT_PUBLIC_CHAT_API=http://localhost:8000/api/chat next dev",
+    "dev": "cross-env NEXT_PUBLIC_CHAT_API=http://localhost:8081/api/chat next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

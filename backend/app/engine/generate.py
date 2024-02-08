@@ -13,6 +13,7 @@ from dotenv import load_dotenv
 from app.engine.constants import DATA_DIR, STORAGE_DIR
 from app.engine.context import create_service_context
 from app.engine.loader import get_documents
+from app.engine.query_engine import save_query_index
 
 load_dotenv()
 
@@ -26,12 +27,12 @@ logger = logging.getLogger()
 
 
 
-def test_astradb():
+def test_astradb(query_string_1):
     dataset = download_llama_dataset(
     "PaulGrahamEssayDataset", "./data"
     )
 
-    documents = SimpleDirectoryReader("./data").load_data()
+    documents = SimpleDirectoryReader("./data3").load_data()
     print(f"Total documents: {len(documents)}")
     print(f"First document, id: {documents[0].doc_id}")
     print(f"First document, hash: {documents[0].hash}")
@@ -42,10 +43,20 @@ def test_astradb():
         f"{documents[0].text[:360]} ..."
     )
 
+
+    #  # only top 20 list
+    # astra_db_store = AstraDBVectorStore(
+    #     token=ASTRA_DB_APPLICATION_TOKEN,
+    #     api_endpoint=ASTRA_DB_API_ENDPOINT,
+    #     collection_name="fictionlens_prod_3",
+    #     embedding_dimension=1536,
+    # )
+
+    # complete list 
     astra_db_store = AstraDBVectorStore(
         token=ASTRA_DB_APPLICATION_TOKEN,
         api_endpoint=ASTRA_DB_API_ENDPOINT,
-        collection_name="test_fictionlens",
+        collection_name="fictionlens",
         embedding_dimension=1536,
     )
 
@@ -55,12 +66,15 @@ def test_astradb():
         documents, storage_context=storage_context
     )
 
+    save_query_index(index)
+
     query_engine = index.as_query_engine()
-    query_string_1 = "Why did the author choose to work on AI?"
+    # query_string_1 = "Why did the author choose to work on AI?"
     response = query_engine.query(query_string_1)
     print(f"querystring.....")
     print(query_string_1)
     print(response.response)
+    return response
 
 
 def generate_datasource(service_context):
@@ -75,6 +89,6 @@ def generate_datasource(service_context):
 
 if __name__ == "__main__":
     service_context = create_service_context()
-    # generate_datasource(service_context)
-    test_astradb()
+    generate_datasource(service_context)
+    test_astradb("Why did the author choose to work on AI?")
 

@@ -1,3 +1,4 @@
+import os
 from typing import List
 
 from fastapi.responses import StreamingResponse
@@ -9,6 +10,10 @@ from llama_index.llms.base import ChatMessage
 from llama_index.llms.types import MessageRole
 from pydantic import BaseModel
 
+from llama_index import GPTVectorStoreIndex
+from llama_index.vector_stores.astra import AstraDBVectorStore
+
+from app.engine.generate import test_astradb
 chat_router = r = APIRouter()
 
 
@@ -47,16 +52,23 @@ async def chat(
         )
         for m in data.messages
     ]
+    
+    ASTRA_DB_APPLICATION_TOKEN = os.environ.get("ASTRA_DB_APPLICATION_TOKEN")
+    ASTRA_DB_API_ENDPOINT = os.environ.get("ASTRA_DB_API_ENDPOINT")
+    vector_store = AstraDBVectorStore(
+        token=ASTRA_DB_APPLICATION_TOKEN,
+        api_endpoint=ASTRA_DB_API_ENDPOINT,
+        collection_name="fictionlens",
+        embedding_dimension=1536,
+    )
 
-    # query chat engine
-    response = await chat_engine.astream_chat(lastMessage.content, messages)
+    index = GPTVectorStoreIndex.from_vector_store(vector_store)
 
-    # stream response
-    async def event_generator():
-        async for token in response.async_response_gen():
-            # If client closes connection, stop sending events
-            if await request.is_disconnected():
-                break
-            yield token
+    query_engine = index.as_query_engine()
+    response = query_engine.query(lastMessage.content)
 
-    return StreamingResponse(event_generator(), media_type="text/plain")
+    # response = test_astradb(lastMessage.content)
+    
+    print("response.response" + response.response)
+
+    return response.response
