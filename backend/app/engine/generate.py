@@ -1,7 +1,7 @@
 import logging 
 import os
 
-from llama_index.vector_stores import AstraDBVectorStore
+from weaviate import Client as WeaviateClient
 from llama_index import (
     VectorStoreIndex,
     SimpleDirectoryReader,
@@ -52,29 +52,9 @@ def test_astradb(query_string_1):
     #     embedding_dimension=1536,
     # )
 
-    # complete list 
-    astra_db_store = AstraDBVectorStore(
-        token=ASTRA_DB_APPLICATION_TOKEN,
-        api_endpoint=ASTRA_DB_API_ENDPOINT,
-        collection_name="fictionlens",
-        embedding_dimension=1536,
-    )
-
-    storage_context = StorageContext.from_defaults(vector_store=astra_db_store)
-
-    index = VectorStoreIndex.from_documents(
-        documents, storage_context=storage_context
-    )
-
-    save_query_index(index)
-
-    query_engine = index.as_query_engine()
-    # query_string_1 = "Why did the author choose to work on AI?"
-    response = query_engine.query(query_string_1)
-    print(f"querystring.....")
-    print(query_string_1)
-    print(response.response)
-    return response
+    client = WeaviateClient("http://localhost:8080")
+    # Example logic for Weaviate
+    # Add your data generation logic here using the Weaviate client
 
 
 def generate_datasource(service_context):

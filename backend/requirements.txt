@@ -39,6 +39,7 @@ jsonpatch @ file:///tmp/build/80754af9/jsonpatch_1615747632069/work
 jsonpointer==2.1
 libmambapy @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_c6lfzyxwf1/croot/mamba-split_1698782637688/work/libmambapy
 llama-index==0.9.43
+weaviate-client
 lxml==5.1.0
 MarkupSafe==2.1.5
 marshmallow==3.20.2

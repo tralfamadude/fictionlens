@@ -1,6 +1,6 @@
 import logging
 import os
-from llama_index.vector_stores import AstraDBVectorStore
+from weaviate import Client as WeaviateClient
 # from astrapy.db import AstraDB
 
 # from llamadb.indexing import LlamaIndex
@@ -11,8 +11,9 @@ def save_query_index(index):
     global query_index 
     logger = logging.getLogger("uvicorn")
     logger.info(f"Saving query_index...")
-    logger.info(f"query_index to save: {index}")
-    query_index = index
+    client = WeaviateClient("http://localhost:8080")
+    # Example logic for Weaviate
+    # Add your query logic here using the Weaviate client
 
 def get_query_engine(query):
     return query_index
